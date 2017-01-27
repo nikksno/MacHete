@@ -25,3 +25,21 @@ Easy. Now let's say you want to change those profiles over time, to keep the set
 
 Cool! So how do I set up an MDM server? Hold tight, we'll take a look down below after we've seen the other ways of managing client macs.
 
+### Imaging
+
+Let's say you have a perfectly configured and functioning client mac. You've refined its configuration, installed all of the software, even setup that cool time-announcement feature that drives all sysadmins insane. You'd be tempted to simply clone it and restore that image on all other client macs, and be done. Sounds like a good solution right? Well, it's not. A mac that has already started up is like a car that has already driven out of the factory and into asphalt, mud, and dirt. You can keep it clean over time, but you wouldn't want to replicate a non-pristine product in mass right? Nearly everyone will tell you it's ok, but it's not. Just wait until all of your macs start displaying that little-known problem that noone has ever encountered before, and you'll be back to the start.
+
+An image sent over to clients must be the sum of a clean install of macOS [also called a "never booted system", the equivalent of a macOS install to a hard drive after which you shut down the computer entirely without letting it restart], freshly downloaded apps or packages, and script-imposed settings. I'll get into further detail below. For now just keep in mind that an image has to be specificaly crafted, "synthesised" if you will, with a specific program, not ripped off of a working mac.
+
+### Profiling vs Imaging
+
+If you've followed the explanation closely, you'll surely be wondering what to choose between the two, especially since they can and do overlap often times, meaning that the same result can be achieved both ways. This is the deal:
+
+**Profiling** [via MDM, the only way to really do it] is dinamic, is very simply applied and changed, and is essentially a layer applied on top of a working system. Just as you apply it you can remove it, and you'll know exactly what settings and configurations you'll be applying and removing.
+
+**Imaging** is static, meaning you have to create a new image every time you want a different final result on the client. The software and configurations included in the image are obscure, hard, or even downright impossible to change after the fact.
+
+So basically **Profiles** have to be applied on top of a system, but once you do that you can easily refine anything you want in the future, whereas **Images** already have everything you want built into them, but because of this have to be set up in a very modular and forward-thinking way, and must be recreated when you want to change something.
+
+The best way to choose is the only one: start thinking from scratch, with an open mind, about everything you're doing and will be doing in the future, and follow these steps:
+
