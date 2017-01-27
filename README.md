@@ -47,7 +47,7 @@ The best way to choose whether to use one or the other, or both, is the only one
 
 2. You've decided to include any kind of app, package, printer driver, and custom setting outside of those allowed by your MDM server in your client installation. Is a static image going to be enough for you, knowing that any change you'll want to apply will have to be applied inside a new image, and redistributed, therefore formatting the client, or will you want more future-proofing in your client macs? In the first instance, choose **Imaging** only, otherwise keep going.
 
-3. You've decided to include any kind of app, package, printer driver, and custom setting outside of those allowed by your MDM server in your client installation, and to have the ability to later change specific settings from your MDM server and perhaps distributing software from the Mac App Store. Therefore you definitely need a **Profiling + Imaging** approach. It'll take a little longer to set up, but trust me you'll see the difference right away in your daily use.
+3. You've decided to include any kind of app, package, printer driver, and custom setting outside of those allowed by your MDM server in your client installation, and to have the ability to later change specific settings from your MDM server and perhaps distributing software from the Mac App Store. Therefore you definitely need a **Imaging + Profiling** approach. It'll take a little longer to set up, but trust me you'll see the difference right away in your daily use.
 
 ## Putting all of the pieces together
 
@@ -97,8 +97,21 @@ And on the client:
 2. Perform the initial setup [language, region, user, etc...]
 3. Rock like a badass
 
-### Profiling + Imaging
+### Imaging + Profiling
 
 You've chosen the full bundle. You're committed to saving the day once and for all for yourself and your future colleagues. You're going to go in, do your stuff, and walk out the other side like a hero. Let's get right to it:
 
-each client:
+Server side:
+
+1. Set up the MDM server
+2. Collect all of the apps and packages you want to include in the image, and customize the extra [not-in-MDM] settings you'll apply with the script.
+3. Download the macOS installer
+4. Create the image with macOS+software+settings+profiles inside
+5. Convert the image to a NetRestore image
+6. Set up the NetRestore service on the server
+
+Client side:
+
+1. Start up the client while pressing N [via ethernet or wifi]
+2. Perform the initial setup [language, region, user, etc...]
+3. Retire. You've done your job.
