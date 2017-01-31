@@ -115,3 +115,7 @@ Client side:
 1. Start up the client while pressing N [via ethernet or wifi]
 2. Perform the initial setup [language, region, user, etc...]
 3. Retire. You've done your job.
+
+## How to actually fucking do this
+
+[developing...] [31/01/2017]
