@@ -24,6 +24,8 @@ say -v Victoria "waiting for network connection"
 
 until ping -c1 8.8.8.8 &>/dev/null; do :; done
 
+say -v Victoria "network connection acquired"
+
 fi
 
 ###############################################
