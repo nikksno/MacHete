@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# MacHete First Boot scripts
+# MacHete NetRestore First Boot scripts
 
 # Introduce delay to avoid audio conflict with Voiceover announcement
 
@@ -9,6 +9,26 @@ sleep 16
 # Announce
 
 say -v Victoria "starting firstboot script"
+
+sleep 4
+
+# Wait for network connection [comment out if network not required for your script] [change ping test ip if needed]
+
+if ping -q -c 1 -W 1 8.8.8.8 >/dev/null; then
+
+say -v Victoria "network connection good"
+
+else
+
+say -v Victoria "waiting for network connection"
+
+until ping -c1 8.8.8.8 &>/dev/null; do :; done
+
+fi
+
+###############################################
+### INSERT SYSTEM LEVEL COMMANDS BELOW HERE ###
+###############################################
 
 # 01 Disable GateKeeper
 
@@ -52,13 +72,19 @@ echo "echo 'SilentAutoUpdateEnable=0' >> /Library/Application\ Support/Macromedi
 sudo mv /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTA454e-1sided.gz /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTA454e.gz
 sudo mv /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTAC364e-1sided.gz /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTAC364e.gz
 
-sudo lpadmin -p StaffRoom_Printer_Left_v2 -D "StaffRoom Printer Left v2" -L "Staff Room" -E -v lpd://192.168.1.101 -P /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTA454e.gz
-sudo lpadmin -p StaffRoom_Printer_Right_v2 -D "StaffRoom Printer Right v2" -L "Staff Room" -E -v lpd://192.168.1.102 -P /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTA454e.gz
-sudo lpadmin -p GroundFloor_Printer_Colour_v2 -D "GroundFloor Printer Colour v2" -L "Ground Floor" -E -v lpd://192.168.1.103 -P /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTAC364e.gz
+sudo lpadmin -p StaffRoom_Printer_Left_v2 -D "StaffRoom Printer Left v2" -L "Staff Room" -E -v lpd://10.129.88.116 -P /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTA454e.gz
+sudo lpadmin -p StaffRoom_Printer_Right_v2 -D "StaffRoom Printer Right v2" -L "Staff Room" -E -v lpd://10.129.88.115 -P /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTA454e.gz
+sudo lpadmin -p GroundFloor_Printer_Colour_v2 -D "GroundFloor Printer Colour v2" -L "Ground Floor" -E -v lpd://10.129.88.111 -P /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTAC364e.gz
+
+##########################################
+### STOP EDITING SYSTEM LEVEL COMMANDS ###
+##########################################
 
 # Announce
 
 say -v Victoria "system level commands complete"
+
+sleep 4
 
 # Wait for Initial Setup to be completed by the user
 
@@ -71,7 +97,21 @@ done
 
 say -v Victoria "setup complete"
 
-# Introduce delay before user-specific actions are performed
+sleep 4
+
+# Wait for User[s] creation to be complete
+
+usersnumber=$(dscl . list /users shell | grep -v false | grep -v _ | wc -l | tr -d " \t\r")
+
+while [[ $usersnumber == 0 ]]
+do
+sleep 1
+usersnumber=$(dscl . list /users shell | grep -v false | grep -v _ | wc -l | tr -d " \t\r")
+done
+
+# Announce
+
+say -v Victoria "user creation complete"
 
 sleep 32
 
@@ -81,13 +121,23 @@ sleep 32
 
 say -v Victoria "starting user level commands"
 
+sleep 4
+
+#############################################
+### INSERT USER LEVEL COMMANDS BELOW HERE ###
+#############################################
+
 # 01 Enable battery percentage display in menu battery
 
 sudo -u admin defaults write com.apple.menuextra.battery ShowPercent YES
 sudo -u user defaults write com.apple.menuextra.battery ShowPercent YES
 sudo killall SystemUIServer
 
-# Announce user commands complete
+########################################
+### STOP EDITING USER LEVEL COMMANDS ###
+########################################
+
+# Announce
 
 say -v Victoria "user level commands complete"
 
