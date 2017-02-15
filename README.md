@@ -118,4 +118,109 @@ Client side:
 
 ## How to actually fucking do this
 
-[developing...] [31/01/2017]
+### Imaging + Profiling
+
+#### Imaging process
+
+AutoDMG installs pure macOS on a disk image with optional additional software. This can be either:
+
+1. A self-contained app [aka "drag and drop" app. i.e.: Google Chrome]. Once added to AutoDMG it will copy them inside the /Applications folder on the system installed inside the DMG
+2. A pre-compiled package [i.e.: printer drivers, Adobe CS, and any software that must be installed from a package]. Once added to AutoDMG it will execute the installation of this software on the system installed inside the DMG with these limitations.
+3. A package composed by us using Iceberg or Composer [i.e.: Lego Wedo, ActivDriver + ActivInspire, etc...] as the respective software isn't installable with a standard procedure or to include license keys and other stuff. Once added to AutoDMG it will execute the installation of this software on the system installed inside the DMG with these limitations.
+
+#### Software types
+
+All three types are simply dragged and dropped into AutoDMG during the DMG creation process and it will handle them as written above depending on their type. The limitations we are talking about usually involve scripts containing commands like lpadmin that won't apply to the system in the DMG but the one of the host using AutoDMG. Pre-made packages usually work. Custom-made packages [Iceberg, Composer] must not include scripts. If software installed via a pre-made package ends up not working as expected on clients and/or custom-made packages must include scripts, consider adding them to the first-boot-package. If you only need to perform commands without actually dealing with files and folders [such as sputil to disable gatekeeper] simply add such commands to the first boot script that will get bundled inside the first-boot-package.
+
+#### Workflow setup
+
+You'll always be working on a workstation, which is a normal mac [not the server] possibly freshly installed and with no customizations. Always work on an external drive [and make backups]. This will allow you to easily have everything you need on any other workstations you might work on. Apple tools fail often and keep failing after. You'll have to rotate workstation sooner or later. Trust me. Create a folder on the external drive called Macs. Inside create the following subfolders:
+
+01. 01 | macOS installers
+02. 02 | Software and Scripts
+01 | Imaged
+01 | Sources
+02 | Finals
+02 | Firstboot
+01 | Sources
+01 | Script
+01 | Source script
+02 | Final Iceberg Package
+02 | ProMan Enroller
+01 | Source profiles
+02 | Source installer script
+03 | Final Iceberg Package
+02 | Finals
+03 | Package
+03. 03 | AutoDMG
+04. 04 | NBIs
+
+Download "Install macOS" from the App Store. Click continute when prompted. When the  download is finished move the installer to folder 01.
+
+In 02 > 01 > 02 drag self-contained apps and pre-composed packages.
+
+If there's a package you're going to compose yourself with Iceberg or Composer create a directory with its name inside 02 > 01 > 01. Work with your preferred software to package everything and place the final product in 02 > 01 > 02.
+
+In 02 > 02 > 01 > 01 > 01 open the script with a text editor [or nano via cli] and customize the script that will run inside the first boot package. These scripts will run on the booted volume so you can write any valid command you'd like. Follow the comments to understand what everything does and what to write where. Then open the Iceberg project in 02 > 02 > 01 > 01 > 02 and build it. Copy the final product to 02 > 02 > 02.
+
+In 02 > 02 > 01 > 02 > 01 drag the trust profile and enrollment profile from your mdm server [profile manager for instance]. Then edit the names in the script in 02 > 02 > 01 > 02 > 02 to match the names of such profiles. Then open the Iceberg project in 02 > 02 > 01 > 02 > 03 and build it. Copy the final product to 02 > 02 > 02.
+
+If you have any other packages you'd like to include in the first boot package [beyond the script and the mdm enroller] you can create a new folder called 02 > 02 > 01 > 03 | [name] and place the final results in 02 > 02 > 02
+
+Now in 02 > 02 > 02 you should have the script package, the mdm enroller package, and any other packages you created in the previous paragraph. Open a terminal window, type sudo, and drag the first-boot-pkg program found inside the 02 > 02 > 03 folder into the terminal window: this will insert the path to the first-boot-pkg program inside the window, preceded by the "sudo" word you typed. Now type "--pkg" and drag in the first package inside 02 > 02 > 02, then type "--pkg" and drag in the second package inside 02 > 02 > 02, and so on. You should have something like:
+
+sudo /Volumes/EXT_DRIVE/Macs/02\ \|\ Software\ and\ Scripts/2\ \|\ FirstBoot/3\ \|\ Final\ FirstBoot\ Package/first-boot-pkg --pkg /Volumes/EXT_DRIVE/Macs/02\ \|\ Software\ and\ Scripts/2\ \|\ FirstBoot/2\ \|\ Final\ Packages/A\ script.pkg --pkg /Volumes/EXT_DRIVE/Macs/02\ \|\ Software\ and\ Scripts/2\ \|\ FirstBoot/2\ \|\ Final\ Packages/B\ ProMan\ Enroller.pkg
+
+Now press return and enter your admin password [if you get errors, ensure you're doing this from an admin account on your workstation]. Your first boot package will be written to your home directory [~/]. Copy it and paste it into the 02 > 02 > 03 folder.
+
+#### AutoDMG
+
+To optimize the functionality of AutoDMG use the following workflow as suggested by the developer:
+
+01. Drag the macOS installer from the 01 folder into AutoDMG. Do not apply updates. Do not add any software. Build it and save it to the 03 folder. This will create a dmg called osx-\*\*\*
+02. Drag the newly created DMG in AutoDMG. Download updates and apply them. Build it and save it to the 03 folder. This will create a dmg called osx-updated-\*\*\*
+03. Drag the newly created DMG in AutoDMG. Do not apply any update. Add all of your Apps, pre-made packages, and custom-packages from folder 02 > 01 > 02 and first-boot-package from folder 02 > 02 > 03 in AutoDMG in this order. Build it and save it to the 03 folder. This will create a dmg called osx-custom-*\*\*.
+
+This will be the final DMG to be fed to System Image Utility to create the NBI. Once AutoDMG is finished open the DMG in finder, wait for it to verify it, and then launch SIU.
+
+#### System Image Utility
+
+Select NetRestore, select the Macintosh HD volume from Finder [the content of the opened DMG], and click next on every step, only modifying the following:
+Automatically install to: enable it and write "Macintosh HD" exactly without quotes. Check erase before install.
+Call it NETR XXxx YYyy PFRX where XXXX is the version of macOS in the format:
+XX for major macOS version [10 for sierra]
+xx for minor macOS version [12 for sierra]
+YY for major image version [sequential, up to you, currently 12 (for v1.2)]
+yy for minor image version [sequential, up to you, currently 04 (for v1.2)]
+PFRX stands for Partition [later added in Automator], Format, Restore, X [other stuff]
+At the MAC Address screen, press customize on the bottom left. This will open Automator with all fields pre-populated.
+Automator
+
+Once in Automator:
+
+Check the first step of the workflow has Macintosh HD with a white icon selected, since this setting tends to get lost when opening Automator from SIU
+From the left sidebar look for the "partition disk" task and drag it in the workflow right underneath the "define netrestore source", so as the second element overall.
+Select "partition the first disk found"
+Input the name of the volume created as "Macintosh HD" exactly without quotes
+Towards the end [further details developing...] enter "Macintosh HD" exactly without quotes if the field is not greyed out [if it is don't worry, it happens, this won't affect you in any way, in theory] and copy and paste the name between fields [further details developing...]
+Select the correct destination for your final NBI if you'd rather it not ending up in the root of your user's home folder
+Press build on the top right and wait the 15 - 45 minutes it takes it to build the NBI.
+
+Once this image is complete, copy it to the server's desktop.
+
+#### macOS Server setup
+
+On the server, open the Server.app App. On the left sidebar, click advanced, and them among the entries that appear choose NetInstall. In storage locations, select edit, then set your server's main drive [or an external one if available] to images only. This will create the /Library/NetBoot/NetBootSP0/ directory structure to the chosen drive.
+Back in the Finder, from the Go menu, select Go to Folder. Enter "/Library/NetBoot/NetBootSP0/" without quotes or "/Volumes/DRIVE_NAME/Library/NetBoot/NetBootSP0/" without quotes in case of a non-main drive if you've selected such in the previous step.
+Copy the NBI from the desktop to the NetBootSP0 folder.
+Back on Server.app, wait for the image to appear in the list, then select it, click the cog wheel, edit it, set make available over to NFS, press ok. Click the cog wheel once again, select use as default image. You're done.
+
+#### Clients
+
+Start up a mac with ethernet to the same lan / vlan as your server and possibly power if it's a notebook. As soon as you press the power button press and hold the N button on its keyboard until you see a flashing globe in the middle of the screen, then, if all works correctly, your mac should take at least around 30 - 45 minutes to restore depending on your wired lan's speed.
+When it's finished, it'll reboot, and take you to the initial setup screen. All extras will have already been applied except for the firstboot script, which will start running shortly in the background, alerting you verbally on its status.
+Follow the setup steps until the end. When finished the mac will reboot.
+When finished open system preferences > sharing, change the mac's name, and enable remote management with all privileges [alt-click selects all checkboxes].
+The mac is now ready to be given to the user or placed in its location.
+
+#### developing [20170215 ~ ...]
