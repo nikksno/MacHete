@@ -1,5 +1,5 @@
 # MacHete
-The definitive fucking startpoint to be a mac admin for your organization
+The definitive fucking startpoint to be a mac admin for your organization. Includes a complete overview of how everything works, links to the tools you'll be using, and a functional directory structure to prepare your final products. That's right: this is going from start to end.
 
 ## This is the situation
 
@@ -116,6 +116,24 @@ Client side:
 2. Perform the initial setup [language, region, user, etc...]
 3. Retire. You've done your job.
 
+## Getting ready
+
+Whatever you'll be doing I highly recommend using the following setup and software:
+
+1. A Mac workstation, which is a normal mac [not the server] possibly freshly installed and with no customizations.
+2. An external drive. This will allow you to easily have everything you need on any other workstations you might work on. Apple tools fail often and keep failing afterwards. You'll likely have to rotate workstation or format it sooner or later. Trust me.
+3. A backup utility to make a clone [a 1 to 1 exact copy] of your external drive, either to another external drive or to some remote storage. I highly recommend [Carbon Copy Cloner](http://bombich.com) [not free - 30 day trial], but if you don't want to spend the cash you can achieve the same result from the command line using the rsync tool, losing the benefits of the gui [obviously ;], easy scheduling, and other stuff.
+
+If you'll be going with an Imaging or Imaging + Profiling approach you'll also need:
+
+4. The superb [AutoDMG](https://github.com/MagerValp/AutoDMG/releases). Download the dmg for the latest release from the linked page. Copy the app from inside the disk image to the root of the Macs folder on your external drive.
+5. The amazing [first-boot-pkg](https://github.com/grahamgilbert/first-boot-pkg). Press Clone or Download > Download ZIP, open the zip, and copy all contents to the 02 > 02 > 03 folder [except for the readme.md file].
+6. The epic [Iceberg](http://s.sudre.free.fr/Software/Iceberg.html). Download it and copy the mpkg from inside the disk image to the root of the Macs folder on your external drive. Also open said mpkg and install it to your workstation. You'll have to actually reinstall Iceberg if you change workstation, as it's not a self-contained app, and cannot therefore be executed as is from the external drive.
+
+If you'll be creating your own software packages for the reasons listed above you'll also need:
+
+1. [Composer](https://www.jamf.com/products/jamf-composer/), which basically takes a snapshot of a workstation's system before and after an event, and bundles all the differences between the two snapshots [the delta] in an installable package. You can use it to package deltas that include any kind of activity that is written to disk by the system [software installations, licence registrations, preference modifications, etc...]. Free alternatives never worked in my experience as they were largely outdated or buggy.
+
 ## How to actually fucking do this
 
 ### Note about Imaging + Profiling
@@ -146,7 +164,7 @@ All three types are simply dragged and dropped into AutoDMG during the DMG creat
 
 #### Workflow setup
 
-You'll always be working on a workstation, which is a normal mac [not the server] possibly freshly installed and with no customizations. Always work on an external drive [and make backups]. This will allow you to easily have everything you need on any other workstations you might work on. Apple tools fail often and keep failing after. You'll have to rotate workstation sooner or later. Trust me. Create a folder on the external drive called Macs. Inside create the following subfolders:
+Create a folder on the external drive called Macs. Inside create the following subfolders:
 
 01. 01 | macOS installers
 02. 02 | Software and Scripts
