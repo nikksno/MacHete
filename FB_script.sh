@@ -4,7 +4,7 @@
 
 # Introduce delay to avoid audio conflict with Voiceover announcement
 
-sleep 16
+sleep 32
 
 # Announce
 
@@ -145,7 +145,7 @@ say -v Victoria "user level commands complete"
 
 # Introduce delay for automated reboot after the end of this script's execution by the system
 
-sleep 32
+sleep 4
 
 # Announce computer ready
 
