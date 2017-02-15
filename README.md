@@ -118,9 +118,21 @@ Client side:
 
 ## How to actually fucking do this
 
-### Imaging + Profiling
+### Note about Imaging + Profiling
 
-#### Imaging process
+To achieve this follow the Profiling only guide and the actual Imaging + Profiling guide down below.
+
+### Profiling only
+
+[developing]
+
+### Imaging only
+
+To achieve this follow the Imaging + Profiling guide *without* the additional steps written in *italics*.
+
+### Imaging + Profiling [skip steps in *italics* for Imaging only]
+
+#### Overview
 
 AutoDMG installs pure macOS on a disk image with optional additional software. This can be either:
 
@@ -146,10 +158,12 @@ You'll always be working on a workstation, which is a normal mac [not the server
 01 | Script
 01 | Source script
 02 | Final Iceberg Package
+*
 02 | ProMan Enroller
 01 | Source profiles
 02 | Source installer script
 03 | Final Iceberg Package
+*
 02 | Finals
 03 | Package
 03. 03 | AutoDMG
@@ -163,13 +177,15 @@ If there's a package you're going to compose yourself with Iceberg or Composer c
 
 In 02 > 02 > 01 > 01 > 01 open the script with a text editor [or nano via cli] and customize the script that will run inside the first boot package. These scripts will run on the booted volume so you can write any valid command you'd like. Follow the comments to understand what everything does and what to write where. Then open the Iceberg project in 02 > 02 > 01 > 01 > 02 and build it. Copy the final product to 02 > 02 > 02.
 
+*
 In 02 > 02 > 01 > 02 > 01 drag the trust profile and enrollment profile from your mdm server [profile manager for instance]. Then edit the names in the script in 02 > 02 > 01 > 02 > 02 to match the names of such profiles. Then open the Iceberg project in 02 > 02 > 01 > 02 > 03 and build it. Copy the final product to 02 > 02 > 02.
 
 If you have any other packages you'd like to include in the first boot package [beyond the script and the mdm enroller] you can create a new folder called 02 > 02 > 01 > 03 | [name] and place the final results in 02 > 02 > 02
+*
 
 Now in 02 > 02 > 02 you should have the script package, the mdm enroller package, and any other packages you created in the previous paragraph. Open a terminal window, type sudo, and drag the first-boot-pkg program found inside the 02 > 02 > 03 folder into the terminal window: this will insert the path to the first-boot-pkg program inside the window, preceded by the "sudo" word you typed. Now type "--pkg" and drag in the first package inside 02 > 02 > 02, then type "--pkg" and drag in the second package inside 02 > 02 > 02, and so on. You should have something like:
 
-sudo /Volumes/EXT_DRIVE/Macs/02\ \|\ Software\ and\ Scripts/2\ \|\ FirstBoot/3\ \|\ Final\ FirstBoot\ Package/first-boot-pkg --pkg /Volumes/EXT_DRIVE/Macs/02\ \|\ Software\ and\ Scripts/2\ \|\ FirstBoot/2\ \|\ Final\ Packages/A\ script.pkg --pkg /Volumes/EXT_DRIVE/Macs/02\ \|\ Software\ and\ Scripts/2\ \|\ FirstBoot/2\ \|\ Final\ Packages/B\ ProMan\ Enroller.pkg
+sudo /Volumes/EXT_DRIVE/Macs/02\ \|\ Software\ and\ Scripts/2\ \|\ FirstBoot/3\ \|\ Final\ FirstBoot\ Package/first-boot-pkg --pkg /Volumes/EXT_DRIVE/Macs/02\ \|\ Software\ and\ Scripts/2\ \|\ FirstBoot/2\ \|\ Final\ Packages/A\ script.pkg *--pkg /Volumes/EXT_DRIVE/Macs/02\ \|\ Software\ and\ Scripts/2\ \|\ FirstBoot/2\ \|\ Final\ Packages/B\ ProMan\ Enroller.pkg*
 
 Now press return and enter your admin password [if you get errors, ensure you're doing this from an admin account on your workstation]. Your first boot package will be written to your home directory [~/]. Copy it and paste it into the 02 > 02 > 03 folder.
 
