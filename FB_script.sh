@@ -1,30 +1,75 @@
 #!/bin/bash
 
-# MacHete NetRestore First Boot scripts
+# BES NetRestore First Boot scripts
+
+#################################
+### INSERT OPTIONS BELOW HERE ###
+#################################
+
+# Announce steps? [y/n]
+
+ANNOUNCE=y
+
+# Wait for network connection? [y/n]
+
+WAITFORNETWORK=y
+
+#################################
+##### STOP EDITING OPTIONS ######
+#################################
+
+###################################
+### INSERT VARIABLES BELOW HERE ###
+###################################
+
+# Specify an IPv4 address to ping to detect network connection if WAITFORNETWORK=y
+
+PINGADDRESS=8.8.8.8
+
+# List user[s] created via create-user-pkg or DEP/ASM [NOT via initial setup] for two reasons:
+
+## To avoid false positives when detecting completion of the user creation during the initial setup on the client by the end user
+## To know which users to always apply user-level commands to
+
+USER1=evilcorp-user
+USER2=null
+USER3=null
+
+# If you have a user that is frequently or always crated via the initial setup list its name here to also apply user-level commands to it. Note that user-level commands will not apply to users NOT matching USER1, USER2, USER3, or ADDITIONALUSER
+
+ADDITIONALUSER=evilcorp-admin
+
+###################################
+##### STOP EDITING VARIABLES ######
+###################################
 
 # Introduce delay to avoid audio conflict with Voiceover announcement
 
-sleep 32
+sleep 42
 
 # Announce
 
-say -v Victoria "starting firstboot script"
+if [ $ANNOUNCE = "y" ]; then say -v Victoria "starting firstboot script"; fi
 
 sleep 4
 
-# Wait for network connection [comment out if network not required for your script] [change ping test ip if needed]
+# Wait for network connection
 
-if ping -q -c 1 -W 1 8.8.8.8 >/dev/null; then
+if [ $WAITFORNETWORK = "y" ]; then
 
-say -v Victoria "network connection good"
+if ping -q -c 1 -W 1 $PINGADDRESS >/dev/null; then
+
+if [ $ANNOUNCE = "y" ]; then say -v Victoria "network connection good"; fi
 
 else
 
-say -v Victoria "waiting for network connection"
+if [ $ANNOUNCE = "y" ]; then say -v Victoria "waiting for network connection"; fi
 
-until ping -c1 8.8.8.8 &>/dev/null; do :; done
+until ping -c1 $PINGADDRESS &>/dev/null; do :; done
 
-say -v Victoria "network connection acquired"
+if [ $ANNOUNCE = "y" ]; then say -v Victoria "network connection acquired"; fi
+
+fi
 
 fi
 
@@ -74,9 +119,9 @@ echo "echo 'SilentAutoUpdateEnable=0' >> /Library/Application\ Support/Macromedi
 sudo mv /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTA454e-1sided.gz /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTA454e.gz
 sudo mv /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTAC364e-1sided.gz /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTAC364e.gz
 
-sudo lpadmin -p StaffRoom_Printer_Left_v2 -D "StaffRoom Printer Left v2" -L "Staff Room" -E -v lpd://10.129.88.116 -P /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTA454e.gz
-sudo lpadmin -p StaffRoom_Printer_Right_v2 -D "StaffRoom Printer Right v2" -L "Staff Room" -E -v lpd://10.129.88.115 -P /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTA454e.gz
-sudo lpadmin -p GroundFloor_Printer_Colour_v2 -D "GroundFloor Printer Colour v2" -L "Ground Floor" -E -v lpd://10.129.88.111 -P /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTAC364e.gz
+sudo lpadmin -p StaffRoom_Printer_Left_v2 -D "StaffRoom Printer Left v2" -L "EVILcorp Staff Room" -E -v lpd://10.0.1.111 -P /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTA454e.gz
+sudo lpadmin -p StaffRoom_Printer_Right_v2 -D "StaffRoom Printer Right v2" -L "EVILcorp Staff Room" -E -v lpd://10.0.1.112 -P /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTA454e.gz
+sudo lpadmin -p GroundFloor_Printer_Colour_v2 -D "GroundFloor Printer Colour v2" -L "EVILcorp Ground Floor" -E -v lpd://10.0.1.113 -P /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTAC364e.gz
 
 ##########################################
 ### STOP EDITING SYSTEM LEVEL COMMANDS ###
@@ -84,7 +129,7 @@ sudo lpadmin -p GroundFloor_Printer_Colour_v2 -D "GroundFloor Printer Colour v2"
 
 # Announce
 
-say -v Victoria "system level commands complete"
+if [ $ANNOUNCE = "y" ]; then say -v Victoria "system level commands complete"; fi
 
 sleep 4
 
@@ -97,31 +142,31 @@ done
 
 # Announce
 
-say -v Victoria "setup complete"
+if [ $ANNOUNCE = "y" ]; then say -v Victoria "setup complete"; fi
 
 sleep 4
 
 # Wait for User[s] creation to be complete
 
-usersnumber=$(dscl . list /users shell | grep -v false | grep -v _ | wc -l | tr -d " \t\r")
+usersnumber=$(dscl . list /users shell | grep -v false | grep -v _ | grep -v root | grep -v $USER1 | grep -v $USER2 | grep -v $USER3 | wc -l | tr -d " \t\r")
 
 while [[ $usersnumber == 0 ]]
 do
 sleep 1
-usersnumber=$(dscl . list /users shell | grep -v false | grep -v _ | wc -l | tr -d " \t\r")
+usersnumber=$(dscl . list /users shell | grep -v false | grep -v _ | grep -v root | grep -v $USER1 | grep -v $USER2 | grep -v $USER3 | wc -l | tr -d " \t\r")
 done
 
 # Announce
 
-say -v Victoria "user creation complete"
+if [ $ANNOUNCE = "y" ]; then say -v Victoria "user creation complete"; fi
 
 sleep 32
 
-# Perform user-specific actions since user [users in case of DEP/ASM admin user creation policy] has/have now been created
+# Perform user-specific actions since user has now been created
 
 # Announce
 
-say -v Victoria "starting user level commands"
+if [ $ANNOUNCE = "y" ]; then say -v Victoria "starting user level commands"; fi
 
 sleep 4
 
@@ -131,8 +176,10 @@ sleep 4
 
 # 01 Enable battery percentage display in menu battery
 
-sudo -u admin defaults write com.apple.menuextra.battery ShowPercent YES
-sudo -u user defaults write com.apple.menuextra.battery ShowPercent YES
+sudo -u $USER1 defaults write com.apple.menuextra.battery ShowPercent YES
+sudo -u $USER2 defaults write com.apple.menuextra.battery ShowPercent YES
+sudo -u $USER3 defaults write com.apple.menuextra.battery ShowPercent YES
+sudo -u $ADDITIONALUSER defaults write com.apple.menuextra.battery ShowPercent YES
 sudo killall SystemUIServer
 
 ########################################
@@ -141,7 +188,7 @@ sudo killall SystemUIServer
 
 # Announce
 
-say -v Victoria "user level commands complete"
+if [ $ANNOUNCE = "y" ]; then say -v Victoria "user level commands complete"; fi
 
 # Introduce delay for automated reboot after the end of this script's execution by the system
 
@@ -149,7 +196,7 @@ sleep 4
 
 # Announce computer ready
 
-say -v Victoria "computer ready"
+if [ $ANNOUNCE = "y" ]; then say -v Victoria "computer ready"; fi
 
 # Exit script
 
