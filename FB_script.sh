@@ -14,6 +14,10 @@ ANNOUNCE=y
 
 WAITFORNETWORK=y
 
+# Set autologin user? [y/n] [overrides setting from create-user-pkg]
+
+SETAUTOLOGIN=n
+
 #################################
 ##### STOP EDITING OPTIONS ######
 #################################
@@ -38,6 +42,10 @@ USER3=null
 # If you have a user that is frequently or always crated via the initial setup list its name here to also apply user-level commands to it. Note that user-level commands will not apply to users NOT matching USER1, USER2, USER3, or ADDITIONALUSER
 
 ADDITIONALUSER=evilcorp-admin
+
+# Set the autologin user if SETAUTOLOGIN=y
+
+AUTOLOGINUSER=evilcorp-user
 
 ###################################
 ##### STOP EDITING VARIABLES ######
@@ -174,7 +182,11 @@ sleep 4
 ### INSERT USER LEVEL COMMANDS BELOW HERE ###
 #############################################
 
-# 01 Enable battery percentage display in menu battery
+# 01 Set autologin user
+
+if [ ! $AUTOLOGINUSER = "null" ]; then sudo defaults write /Library/Preferences/com.apple.loginwindow autoLoginUser "$AUTOLOGINUSER"; fi
+
+# 02 Enable battery percentage display in menu battery
 
 sudo -u $USER1 defaults write com.apple.menuextra.battery ShowPercent YES
 sudo -u $USER2 defaults write com.apple.menuextra.battery ShowPercent YES
