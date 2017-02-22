@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# BES NetRestore First Boot scripts
+# MacHete FirstBoot script [https://github.com/nikksno/MacHete/]
+
+# Last edit 20170222 Nk
 
 #################################
 ### INSERT OPTIONS BELOW HERE ###
@@ -16,7 +18,7 @@ WAITFORNETWORK=y
 
 # Set autologin user? [y/n] [overrides setting from create-user-pkg]
 
-SETAUTOLOGIN=n
+SETAUTOLOGIN=y
 
 #################################
 ##### STOP EDITING OPTIONS ######
@@ -127,9 +129,9 @@ echo "echo 'SilentAutoUpdateEnable=0' >> /Library/Application\ Support/Macromedi
 sudo mv /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTA454e-1sided.gz /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTA454e.gz
 sudo mv /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTAC364e-1sided.gz /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTAC364e.gz
 
-sudo lpadmin -p StaffRoom_Printer_Left_v2 -D "StaffRoom Printer Left v2" -L "EVILcorp Staff Room" -E -v lpd://10.0.1.111 -P /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTA454e.gz
-sudo lpadmin -p StaffRoom_Printer_Right_v2 -D "StaffRoom Printer Right v2" -L "EVILcorp Staff Room" -E -v lpd://10.0.1.112 -P /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTA454e.gz
-sudo lpadmin -p GroundFloor_Printer_Colour_v2 -D "GroundFloor Printer Colour v2" -L "EVILcorp Ground Floor" -E -v lpd://10.0.1.113 -P /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTAC364e.gz
+sudo lpadmin -p StaffRoom_Printer_Left_v2 -D "StaffRoom Printer Left v2" -L "evilcorp Staff Room" -E -v lpd://192.168.0.111 -P /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTA454e.gz
+sudo lpadmin -p StaffRoom_Printer_Right_v2 -D "StaffRoom Printer Right v2" -L "evilcorp Staff Room" -E -v lpd://192.168.0.112 -P /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTA454e.gz
+sudo lpadmin -p GroundFloor_Printer_Colour_v2 -D "GroundFloor Printer Colour v2" -L "evilcorp Ground Floor" -E -v lpd://192.168.0.113 -P /Library/Printers/PPDs/Contents/Resources/KONICAMINOLTAC364e.gz
 
 ##########################################
 ### STOP EDITING SYSTEM LEVEL COMMANDS ###
@@ -184,7 +186,7 @@ sleep 4
 
 # 01 Set autologin user
 
-if [ ! $AUTOLOGINUSER = "null" ]; then sudo defaults write /Library/Preferences/com.apple.loginwindow autoLoginUser "$AUTOLOGINUSER"; fi
+if [ $SETAUTOLOGIN = "y" ]; then sudo defaults write /Library/Preferences/com.apple.loginwindow autoLoginUser "$AUTOLOGINUSER"; fi
 
 # 02 Enable battery percentage display in menu battery
 
