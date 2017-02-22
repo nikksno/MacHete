@@ -41,7 +41,8 @@ USER1=evilcorp-user
 USER2=null
 USER3=null
 
-# If you have a user that is frequently or always crated via the initial setup list its name here to also apply user-level commands to it. Note that user-level commands will not apply to users NOT matching USER1, USER2, USER3, or ADDITIONALUSER
+# If you have a user that is frequently or always crated via the initial setup list its name here to also apply user-level commands to it.
+# Note that user-level commands will not apply to users NOT matching USER1, USER2, USER3, or ADDITIONALUSER
 
 ADDITIONALUSER=evilcorp-admin
 
