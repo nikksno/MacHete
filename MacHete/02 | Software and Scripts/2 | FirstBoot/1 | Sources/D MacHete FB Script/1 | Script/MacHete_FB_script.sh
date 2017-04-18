@@ -395,7 +395,11 @@ sleep 4
 
 # Announce [or else play the alert sound four times if announcements are disabled in options]
 
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "computer ready"; else tput bel && tput bel && tput bel && tput bel; fi
+if [ $ANNOUNCE = "y" ]; then say -v Victoria "computer ready" && sleep 4; else tput bel && tput bel && tput bel && tput bel; fi
+
+# Exit with style
+
+if [ $ANNOUNCE = "y" ]; then say -v Victoria "my logic is undeniable" && tput bel && tput bel && tput bel && tput bel; fi
 
 # Exit script
 
