@@ -1,5 +1,5 @@
 # MacHete
-The definitive fucking startpoint to be a mac admin for your organization. Includes a complete overview of how everything works, links to the tools you'll be using, and a functional directory structure to prepare your final products. That's right: this is going from start to end.
+The definitive fucking startpoint to be a mac admin for your organization. Includes a complete overview of how everything works, links to the tools you'll be using, and a functional directory structure with sample files to prepare your final products. That's right: this is going from start to end.
 
 ## This is the situation
 
