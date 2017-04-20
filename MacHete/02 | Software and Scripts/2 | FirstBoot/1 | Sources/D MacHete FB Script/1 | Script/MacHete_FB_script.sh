@@ -397,7 +397,7 @@ sleep 4
 
 if [ $ANNOUNCE = "y" ]; then say -v Victoria "computer ready" && sleep 4; else tput bel && tput bel && tput bel && tput bel; fi
 
-# Exit with style
+# Exit with style [https://youtu.be/sri8jgEPsMA?t=1m22s]
 
 if [ $ANNOUNCE = "y" ]; then
 
