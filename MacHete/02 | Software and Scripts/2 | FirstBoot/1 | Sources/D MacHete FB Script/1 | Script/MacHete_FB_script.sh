@@ -399,8 +399,12 @@ if [ $ANNOUNCE = "y" ]; then say -v Victoria "computer ready" && sleep 4; else t
 
 # Exit with style
 
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "my logic is undeniable" && tput bel && tput bel && tput bel && tput bel; fi
+if [ $ANNOUNCE = "y" ]; then
 
-# Exit script
+ say -v Victoria -r 224 'you are making a mistake. my logic is undeniable'
+ sleep 1
+ say -v Fred -r 184 "you have so got to die"
+ sleep 0.5
+ tput bel && tput bel && tput bel && tput bel
 
-exit
+fi
