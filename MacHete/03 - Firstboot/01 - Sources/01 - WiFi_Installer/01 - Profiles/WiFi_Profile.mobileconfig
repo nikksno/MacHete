@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>AutoJoin</key>
+			<true/>
+			<key>CaptiveBypass</key>
+			<false/>
+			<key>EncryptionType</key>
+			<string>None</string>
+			<key>HIDDEN_NETWORK</key>
+			<false/>
+			<key>IsHotspot</key>
+			<false/>
+			<key>PayloadDescription</key>
+			<string>Configures Wi-Fi settings</string>
+			<key>PayloadDisplayName</key>
+			<string>Wi-Fi</string>
+			<key>PayloadIdentifier</key>
+			<string>com.apple.wifi.managed.FA6DFBA2-4866-4CB6-8078-910EE5FF3FF7</string>
+			<key>PayloadType</key>
+			<string>com.apple.wifi.managed</string>
+			<key>PayloadUUID</key>
+			<string>FA6DFBA2-4866-4CB6-8078-910EE5FF3FF7</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>ProxyType</key>
+			<string>None</string>
+			<key>SSID_STR</key>
+			<string>EvilWiFi</string>
+		</dict>
+	</array>
+	<key>PayloadDisplayName</key>
+	<string>WiFi_Profile</string>
+	<key>PayloadIdentifier</key>
+	<string>E517A793-152B-4451-8108-8177CECDABFF</string>
+	<key>PayloadOrganization</key>
+	<string>EvilCorp</string>
+	<key>PayloadRemovalDisallowed</key>
+	<false/>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>F349B555-457B-4179-B9AF-394F7AAEFA18</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
