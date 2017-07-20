@@ -13,7 +13,7 @@ Now there is. This is it. You've found it. Let's get started.
 
 Ok so basically you want a very simple thing, the same thing that everyone fucking wants, but apparently no-one seems to takle spot-on with any degree of linearity or open-mindedness: for all of your organization's macs to work nicely, smoothly, consistently, and have all of the apps and settings you want on them. End of fucking story.
 
-The idea here is to use as many Apple-provided [read: pre-installed and free] and open source [read: free and - yeah - actually free] tools as possible, all while making your work as modular and streamlined as possible, and making sure the end product is the result of a clean and transparent process.
+The idea here is to use as many Apple-provided [read: pre-installed and free] and open source [read: free and - yeah - actually free] tools as possible, all while making your work as modular and streamlined as possible, and making sure the end product is the result of a clean and transparent process that you can easily maintain over time and - why not - even keep using smoothly in the future without having to re-do all your work from the fucking beginning.
 
 There are several ways to achieve this, and we'll help you find the right balance for you right here, today, no need to climb up a mountain in Tibet and wait for some spiritual force to inspire you. Here we go:
 
@@ -128,7 +128,8 @@ If you'll be going with an Imaging or Imaging + Profiling approach you'll also n
 
 4. The superb [AutoDMG](https://github.com/MagerValp/AutoDMG/releases). Download the dmg for the latest release from the linked page. Copy the app from inside the disk image to the root of the Macs folder on your external drive.
 5. The amazing [first-boot-pkg](https://github.com/grahamgilbert/first-boot-pkg). Press Clone or Download > Download ZIP, open the zip, and copy all contents to the 02 > 02 > 03 folder [except for the readme.md file].
-6. The epic [Iceberg](http://s.sudre.free.fr/Software/Iceberg.html). Download it and copy the mpkg from inside the disk image to the root of the Macs folder on your external drive. Also open said mpkg and install it to your workstation. You'll have to actually reinstall Iceberg if you change workstation, as it's not a self-contained app, and cannot therefore be executed as is from the external drive.
+6. The epic [create-user-pkg](https://github.com/MagerValp/CreateUserPkg). Download the dmg for the latest release from the linked page. Copy the app from inside the disk image to the root of the Macs folder on your external drive.
+7. The unreal [Iceberg](http://s.sudre.free.fr/Software/Iceberg.html). Download it and copy the mpkg from inside the disk image to the root of the Macs folder on your external drive. Also open said mpkg and install it to your workstation. You'll have to actually reinstall Iceberg if you change workstation, as it's not a self-contained app, and cannot therefore be executed as is from the external drive.
 
 If you'll be creating your own software packages for the reasons listed above you'll also need:
 
@@ -164,42 +165,45 @@ All three types are simply dragged and dropped into AutoDMG during the DMG creat
 
 #### Workflow setup
 
-Create a folder on the external drive called Macs. Inside create the following subfolders:
+1. Format your external drive [GUID partition table, one partition in APFS or "Mac OS Extended (Journaled)" called MacHete]
 
-01. 01 | macOS installers
-02. 02 | Software and Scripts
-01 | Imaged
-01 | Sources
-02 | Finals
-02 | Firstboot
-01 | Sources
-01 | Script
-01 | Source script
-02 | Final Iceberg Package
-*
-02 | ProMan Enroller
-01 | Source profiles
-02 | Source installer script
-03 | Final Iceberg Package
-*
-02 | Finals
-03 | Package
-03. 03 | AutoDMG
-04. 04 | NBIs
+2. Download the zip of this repo from the top right of the webpage and unzip it
 
-Download "Install macOS" from the App Store. Click continute when prompted. When the  download is finished move the installer to folder 01.
+3. Place all subfolders inside the MacHete folder [00 - Tools, 01, 02, and so on] in the MacHete Volume you just created in step 1.
 
-In 02 > 01 > 02 drag self-contained apps and pre-composed packages.
+4. Download the required tools from their respective websites [see above in this README] and place them in the "00 - Tools" folder replacing the placeholder subfolders
 
-If there's a package you're going to compose yourself with Iceberg or Composer create a directory with its name inside 02 > 01 > 01. Work with your preferred software to package everything and place the final product in 02 > 01 > 02.
+5. Download "Install macOS" from the App Store. Click continute when prompted. When the  download is finished move the installer to the "01 - macOS Installers" folder.
 
-In 02 > 02 > 01 > 01 > 01 open the script with a text editor [or nano via cli] and customize the script that will run inside the first boot package. These scripts will run on the booted volume so you can write any valid command you'd like. Follow the comments to understand what everything does and what to write where. Then open the Iceberg project in 02 > 02 > 01 > 01 > 02 and build it. Copy the final product to 02 > 02 > 02.
+6.1. Drag self-contained apps and pre-composed packages in the "02 - Software" > "02 - Finals" subfolder.
 
-*
-In 02 > 02 > 01 > 02 > 01 drag the trust profile and enrollment profile from your mdm server [profile manager for instance]. Then edit the names in the script in 02 > 02 > 01 > 02 > 02 to match the names of such profiles. Then open the Iceberg project in 02 > 02 > 01 > 02 > 03 and build it. Copy the final product to 02 > 02 > 02.
+6.2. If there's a package you're going to compose yourself with Iceberg or Composer create a directory with its name inside "02 - Software" > "01 - Sources". Work with your preferred software [Composer for instance] to package everything and place the final product in "02 - Software" > "02 - Finals".
 
-If you have any other packages you'd like to include in the first boot package [beyond the script and the mdm enroller] you can create a new folder called 02 > 02 > 01 > 03 | [name] and place the final results in 02 > 02 > 02
-*
+[not writing the full name of folders from here on, only the leading numbers, i.e. "03 - Firstboot" becomes "03"]
+
+7.1.1. Open Apple Configurator 2 and create a WiFi profile from File > New Profile. The only payload will be "network": configure the WiFi network for clients, and save the profile to the **03 > 01 > 01 > 01** folder.
+
+7.1.2. In the **03 > 01 > 01 > 03**  folder open the Iceberg project [in this case "WiFi_Installer.packproj"] and choose "Build" from the Build menu [command-B]. Drag the created pkg file from the "build" subfolder inside **03 > 01 > 01 > 03** folder to the **03 > 02** folder.
+
+7.2. Open the create-user-pkg utility you previously downloaded, generate user-creating packages for the users you'll want to create on your client macs, and place the final pkg files inside the **03 > 01 > 02** folder and inside the **03 > 02** folder.
+
+7.3.1. Open the "MacHete_FirstBoot.sh" script inside the **03 > 01 > 03 > 01** folder. These commands will run on the booted volume so you can write any valid command you'd like. Follow the comments to understand what everything does and what to write where.
+
+7.3.2. Open the Iceberg project inside the **03 > 01 > 03 > 02** folder, build, and copy the produced pkg file from the "build" subfolder to the **03 > 02** folder.
+
+7.4.1. In the **03 > 01 > 04 > 01** folder drag the trust profile and enrollment profile from your mdm server [profile manager for instance].
+
+7.4.2. Edit the names in the script in **03 > 01 > 04 > 02** to match the names of such profiles.
+
+7.4.3. Open the Iceberg project inside the **03 > 01 > 04 > 03** folder, build, and copy the produced pkg file from the "build" subfolder to the **03 > 02** folder.
+
+7.5.1. In the **03 > 01 > 99** you'll find the SecondBoot package creation sources. You can edit the script inside the **03 > 01 > 99 > 01 > 01 > 01** folder just like you did for the FirstBoot script, and then build its own Iceberg project. The directory structure and the entire logic are the exact same as for the FirstBoot Script you created in step 7.3.
+
+7.5.2. Copy the produced pkg from the **03 > 01 > 99 > 01 > 01 > 02 > build** subfolder to the **03 > 01 > 99 > 02** folder.
+
+7.5.3. Open a terminal window, type sudo, and drag the first-boot-pkg program found inside the **"00 - Tools"** folder into the terminal window: this will insert the path to the first-boot-pkg program inside the window, preceded by the "sudo" word you typed. Now type "--pkg" followed by a space and drag in the package from the **03 > 01 > 99 > 02** folder.
+
+7.5.4. Now press return and enter your admin password [if you get errors, ensure you're doing this from an admin account on your workstation]. Your first boot package will be written to your home directory [~/]. Copy it and paste it into the **03 > 01 > 99 > 03** folder and into the **03 > 02** folder.
 
 Now in 02 > 02 > 02 you should have the script package, the mdm enroller package, and any other packages you created in the previous paragraph. Open a terminal window, type sudo, and drag the first-boot-pkg program found inside the 02 > 02 > 03 folder into the terminal window: this will insert the path to the first-boot-pkg program inside the window, preceded by the "sudo" word you typed. Now type "--pkg" and drag in the first package inside 02 > 02 > 02, then type "--pkg" and drag in the second package inside 02 > 02 > 02, and so on. You should have something like:
 
