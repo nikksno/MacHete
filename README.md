@@ -235,26 +235,34 @@ This will be the final DMG to be fed to System Image Utility to create the NBI. 
 
 Select NetRestore, select the Macintosh HD volume from Finder [the content of the opened DMG], and click next on every step, only modifying the following:
 Automatically install to: enable it and write "Macintosh HD" exactly without quotes. Check erase before install.
-Call it NETR XXxx YYyy PFRX where XXXX is the version of macOS in the format:
+Call it NETR XXxx YYyy ZZzz where:
 XX for major macOS version [10 for sierra]
 xx for minor macOS version [12 for sierra]
-YY for major image version [sequential, up to you, currently 12 (for v1.2)]
-yy for minor image version [sequential, up to you, currently 04 (for v1.2)]
-PFRX stands for Partition [later added in Automator], Format, Restore, X [other stuff]
+YY for major image version [sequential, up to you, currently 16 for me]
+yy for minor image version [sequential, up to you, currently 01 for me]
+ZZ for profile manager server hardware sequential number [currently 01 for me as I'm using server 01]
+zz for profile manager server system sequential number [currently 04 for me as server 01 is on its 4th fresh install]
+
 At the MAC Address screen, press customize on the bottom left. This will open Automator with all fields pre-populated.
 Automator
 
 Once in Automator:
 
 Check the first step of the workflow has Macintosh HD with a white icon selected, since this setting tends to get lost when opening Automator from SIU
+
 From the left sidebar look for the "partition disk" task and drag it in the workflow right underneath the "define netrestore source", so as the second element overall.
+
 Select "partition the first disk found"
+
 Input the name of the volume created as "Macintosh HD" exactly without quotes
+
 Towards the end [further details developing...] enter "Macintosh HD" exactly without quotes if the field is not greyed out [if it is don't worry, it happens, this won't affect you in any way, in theory] and copy and paste the name between fields [further details developing...]
-Select the correct destination for your final NBI if you'd rather it not ending up in the root of your user's home folder
+
+Select the destination for your final NBI to be folder **05**.
+
 Press build on the top right and wait the 15 - 45 minutes it takes it to build the NBI.
 
-Once this image is complete, copy it to the server's desktop.
+Once this image is complete, copy it to the server's **desktop**.
 
 #### macOS Server setup
 
@@ -266,9 +274,13 @@ Back on Server.app, wait for the image to appear in the list, then select it, cl
 #### Clients
 
 Start up a mac with ethernet to the same lan / vlan as your server and possibly power if it's a notebook. As soon as you press the power button press and hold the N button on its keyboard until you see a flashing globe in the middle of the screen, then, if all works correctly, your mac should take at least around 30 - 45 minutes to restore depending on your wired lan's speed.
+
 When it's finished, it'll reboot, and take you to the initial setup screen. All extras will have already been applied except for the firstboot script, which will start running shortly in the background, alerting you verbally on its status.
+
 Follow the setup steps until the end. When finished the mac will reboot.
+
 When finished open system preferences > sharing, change the mac's name, and enable remote management with all privileges [alt-click selects all checkboxes].
+
 The mac is now ready to be given to the user or placed in its location.
 
-#### developing [20170215 ~ ...]
+#### developing [20170720 ~ ...]
