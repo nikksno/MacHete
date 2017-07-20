@@ -205,21 +205,31 @@ All three types are simply dragged and dropped into AutoDMG during the DMG creat
 
 7.5.4. Now press return and enter your admin password [if you get errors, ensure you're doing this from an admin account on your workstation]. Your first boot package will be written to your home directory [~/]. Copy it and paste it into the **03 > 01 > 99 > 03** folder and into the **03 > 02** folder.
 
-Now in 02 > 02 > 02 you should have the script package, the mdm enroller package, and any other packages you created in the previous paragraph. Open a terminal window, type sudo, and drag the first-boot-pkg program found inside the 02 > 02 > 03 folder into the terminal window: this will insert the path to the first-boot-pkg program inside the window, preceded by the "sudo" word you typed. Now type "--pkg" and drag in the first package inside 02 > 02 > 02, then type "--pkg" and drag in the second package inside 02 > 02 > 02, and so on. You should have something like:
+7.6 Now in the **03 > 02** folder you should have all of the needed packages. Open a terminal window, type sudo, and drag the first-boot-pkg program found inside the **"00 - Tools"** folder into the terminal window: this will insert the path to the first-boot-pkg program inside the window, preceded by the "sudo" word you typed. Now type "--pkg" followed by a space and drag in the first package from the **03 > 02** folder." and drag in the first package inside 02 > 02 > 02, then type "--pkg" and drag in the second package inside 02 > 02 > 02, and so on. You should have something like:
 
-sudo /Volumes/EXT_DRIVE/Macs/02\ \|\ Software\ and\ Scripts/2\ \|\ FirstBoot/3\ \|\ Final\ FirstBoot\ Package/first-boot-pkg --pkg /Volumes/EXT_DRIVE/Macs/02\ \|\ Software\ and\ Scripts/2\ \|\ FirstBoot/2\ \|\ Final\ Packages/A\ script.pkg *--pkg /Volumes/EXT_DRIVE/Macs/02\ \|\ Software\ and\ Scripts/2\ \|\ FirstBoot/2\ \|\ Final\ Packages/B\ ProMan\ Enroller.pkg*
+```
+**sudo** /Volumes/MacHete/00 - Tools/first-boot-pkg **--pkg** "/Volumes/MacHete/03 - Firstboot/02 - Packages/WiFi_Installer.pkg" **--pkg** "/Volumes/MacHete/03 - Firstboot/02 - Packages/User_Creator.pkg" **--pkg** "/Volumes/MacHete/03 - Firstboot/02 - Packages/MacHete_FirstBoot.pkg" **--pkg** "/Volumes/MacHete/03 - Firstboot/02 - Packages/ProMan_Enroller.pkg" **--pkg** "/Volumes/MacHete/03 - Firstboot/02 - Packages/second-boot.pkg"
+```
 
-Now press return and enter your admin password [if you get errors, ensure you're doing this from an admin account on your workstation]. Your first boot package will be written to your home directory [~/]. Copy it and paste it into the 02 > 02 > 03 folder.
+Now press return and enter your admin password [if you get errors, ensure you're doing this from an admin account on your workstation]. Your first boot package will be written to your home directory [~/]. Copy it and paste it into the **03 > 03** folder.
 
 #### AutoDMG
 
 To optimize the functionality of AutoDMG use the following workflow as suggested by the developer:
 
-01. Drag the macOS installer from the 01 folder into AutoDMG. Do not apply updates. Do not add any software. Build it and save it to the 03 folder. This will create a dmg called osx-\*\*\*
-02. Drag the newly created DMG in AutoDMG. Download updates and apply them. Build it and save it to the 03 folder. This will create a dmg called osx-updated-\*\*\*
-03. Drag the newly created DMG in AutoDMG. Do not apply any update. Add all of your Apps, pre-made packages, and custom-packages from folder 02 > 01 > 02 and first-boot-package from folder 02 > 02 > 03 in AutoDMG in this order. Build it and save it to the 03 folder. This will create a dmg called osx-custom-*\*\*.
+1. Drag the macOS installer from the **01** folder into AutoDMG. Do not apply updates. Do not add any software. Build it and save it to the **04** folder. This will create a dmg called osx-\*\*\*
 
-This will be the final DMG to be fed to System Image Utility to create the NBI. Once AutoDMG is finished open the DMG in finder, wait for it to verify it, and then launch SIU.
+2. Drag the newly created DMG in AutoDMG from the **04** folder. Download updates and apply them. Do not add any software. Build it and save it back into the **04** folder. This will create a dmg called osx-updated-\*\*\*
+
+3.1. Drag the newly created DMG in AutoDMG from the **04** folder. Do not apply any update.
+
+3.2. Add all of your Apps, pre-made packages, and custom-packages from the **03 > 02** folder into the lower box in AutoDMG.
+
+3.3. Add the first-boot.pkg package from the **03 > 03** folder into AutoDMG **below** all apps and packages added in the previous step.
+
+3.4. Build it and save it to the **04** folder. This will create a dmg called osx-custom-*\*\*.
+
+This will be the final DMG to be fed to System Image Utility to create the NBI. Once AutoDMG is finished open the DMG in finder, skip verification, and then launch SIU.
 
 #### System Image Utility
 
