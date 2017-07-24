@@ -128,7 +128,7 @@ If you'll be going with an Imaging or Imaging + Profiling approach you'll also n
 
 4. The superb [AutoDMG](https://github.com/MagerValp/AutoDMG/releases). Download the dmg for the latest release from the linked page. Copy the app from inside the disk image to the root of the Macs folder on your external drive.
 5. The amazing [first-boot-pkg](https://github.com/grahamgilbert/first-boot-pkg). Press Clone or Download > Download ZIP, open the zip, and copy all contents to the 02 > 02 > 03 folder [except for the readme.md file].
-6. The epic [create-user-pkg](https://github.com/MagerValp/CreateUserPkg). Download the dmg for the latest release from the linked page. Copy the app from inside the disk image to the root of the Macs folder on your external drive.
+6. The epic [create-user-pkg](http://magervalp.github.io/CreateUserPkg/). Download the dmg for the latest release from the linked page. Copy the app from inside the disk image to the root of the Macs folder on your external drive.
 7. The unreal [Iceberg](http://s.sudre.free.fr/Software/Iceberg.html). Download it and copy the mpkg from inside the disk image to the root of the Macs folder on your external drive. Also open said mpkg and install it to your workstation. You'll have to actually reinstall Iceberg if you change workstation, as it's not a self-contained app, and cannot therefore be executed as is from the external drive.
 
 If you'll be creating your own software packages for the reasons listed above you'll also need:
