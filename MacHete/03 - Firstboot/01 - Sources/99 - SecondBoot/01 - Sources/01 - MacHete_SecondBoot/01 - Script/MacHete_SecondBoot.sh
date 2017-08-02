@@ -15,7 +15,7 @@
 ## Vocal feedback is always synthesized independently of this variable.
 ## This var adjusts the system volume on SecondBoot [y=5/7; n=0/7]. In case of it being set to N you can always turn up the volume via keyboard function keys on the client machine during runtime to hear what's going on in real time and viceversa.
 
-ANNOUNCE=y
+ANNOUNCE=n
 
 # Wait for network connection? [y/n]
 
@@ -55,8 +55,6 @@ AUTOLOGIN_USER=evilcorp_user
 
 sleep 124
 
-# Announce [or else play the alert sound four times if announcements are disabled in options]
-
 say -v Victoria "starting secondboot script" && sleep 4
 
 #   ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -67,19 +65,13 @@ if [ $WAITFORNETWORK = "y" ]; then
 
 if ping -q -c 1 -W 1 $PINGADDRESS >/dev/null; then
 
-# Announce [or else play the alert sound one time if announcements are disabled in options]
-
 say -v Victoria "network connection good" && sleep 4
 
 else
 
-# Announce [or else play the alert sound two times if announcements are disabled in options]
-
 say -v Victoria "waiting for network connection" && sleep 4
 
 until ping -c1 $PINGADDRESS &>/dev/null; do :; done
-
-# Announce [or else play the alert sound three times if announcements are disabled in options]
 
 say -v Victoria "network connection acquired" && sleep 4
 

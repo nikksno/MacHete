@@ -2,7 +2,7 @@
 
 # MacHete FirstBoot script [https://github.com/nikksno/MacHete/]
 # Developed for and Tested on 10.12
-# Last edit 20170720 Nk
+# Last edit 20170802 Nk
 
 #   ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -12,7 +12,10 @@
 
 # Announce steps? [y/n]
 
-ANNOUNCE=y
+## Vocal feedback is always synthesized independently of this variable.
+## This var adjusts the system volume on SecondBoot [y=5/7; n=0/7]. In case of it being set to N you can always turn up the volume via keyboard function keys on the client machine during runtime to hear what's going on in real time and viceversa.
+
+ANNOUNCE=n
 
 # Wait for network connection? [y/n]
 
@@ -33,6 +36,8 @@ INITIALSETUPDISABLED=a
 #   ############################################################################
 #   ########################### STOP EDITING OPTIONS ###########################
 #   ############################################################################
+
+if [ $ANNOUNCE = "n" ]; then osascript -e "set Volume 0"; else osascript -e "set Volume 5"; fi
 
 if [ $INITIALSETUPDISABLED = "a" ]; then
 
@@ -117,9 +122,7 @@ sleep 42
 
 fi
 
-# Announce [or else play the alert sound four times if announcements are disabled in options]
-
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "starting firstboot script" && sleep 4; else osascript -e "beep 4" && sleep 4; fi
+say -v Victoria "starting firstboot script" && sleep 4
 
 #   ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -129,21 +132,15 @@ if [ $WAITFORNETWORK = "y" ]; then
 
 if ping -q -c 1 -W 1 $PINGADDRESS >/dev/null; then
 
-# Announce [or else play the alert sound one time if announcements are disabled in options]
-
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "network connection good" && sleep 4; else osascript -e "beep 1" && sleep 4; fi
+say -v Victoria "network connection good" && sleep 4
 
 else
 
-# Announce [or else play the alert sound two times if announcements are disabled in options]
-
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "waiting for network connection" && sleep 4; else osascript -e "beep 2" && sleep 4; fi
+say -v Victoria "waiting for network connection" && sleep 4
 
 until ping -c1 $PINGADDRESS &>/dev/null; do :; done
 
-# Announce [or else play the alert sound three times if announcements are disabled in options]
-
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "network connection acquired" && sleep 4; else osascript -e "beep 3" && sleep 4; fi
+say -v Victoria "network connection acquired" && sleep 4
 
 fi
 
@@ -159,7 +156,7 @@ fi
 
 if [ $INITIALSETUPDISABLED = "y" ]; then
 
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "starting setup level commands" && sleep 4; fi
+say -v Victoria "starting setup level commands" && sleep 4
 
 #   ############################################################################
 #   ################## INSERT SETUP LEVEL COMMANDS BELOW HERE ##################
@@ -167,7 +164,7 @@ if [ $ANNOUNCE = "y" ]; then say -v Victoria "starting setup level commands" && 
 
 # 01 Set Locale + Country + Keyboard Layout
 
-# [Nothing fucking works so screw this for now] | FIX !!!
+# [Nothing works so nevermind for now] | FIX !!!
 
 # 02 Set system language
 
@@ -188,13 +185,13 @@ sudo /usr/bin/defaults write /Library/Preferences/com.apple.timezone.auto Active
 #   #################### STOP EDITING SETUP LEVEL COMMANDS #####################
 #   ############################################################################
 
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "setup level commands complete" && sleep 4; fi
+say -v Victoria "setup level commands complete" && sleep 4
 
 fi
 
 #   ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "starting system level commands" && sleep 4; fi
+say -v Victoria "starting system level commands" && sleep 4
 
 #   ############################################################################
 #   ################# INSERT SYSTEM LEVEL COMMANDS BELOW HERE ##################
@@ -279,7 +276,7 @@ chmod -R 755 /Library/Application\ Support/Google/
 #   #################### STOP EDITING SYSTEM LEVEL COMMANDS ####################
 #   ############################################################################
 
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "system level commands complete" && sleep 4; fi
+say -v Victoria "system level commands complete" && sleep 4
 
 #   ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -292,7 +289,7 @@ do
 sleep 1
 done
 
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "setup complete" && sleep 4; fi
+say -v Victoria "setup complete" && sleep 4
 
 # Wait for User[s] creation to be complete
 
@@ -304,13 +301,13 @@ sleep 1
 usersnumber=$(dscl . list /users shell | grep -v false | grep -v _ | grep -v root | grep -v $USER1 | grep -v $USER2 | grep -v $USER3 | wc -l | tr -d " \t\r")
 done
 
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "user creation complete" && sleep 32; fi
+say -v Victoria "user creation complete" && sleep 32
 
 # Perform user-specific actions since user has now been created
 
 fi
 
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "starting user level commands" && sleep 4; fi
+say -v Victoria "starting user level commands" && sleep 4
 
 #   ############################################################################
 #   ################## INSERT USER LEVEL COMMANDS BELOW HERE ###################
@@ -391,7 +388,7 @@ echo "echo '@reboot sleep 248 && mkdir -p /Users/evilcorp_user/Library/Applicati
 #   ##################### STOP EDITING USER LEVEL COMMANDS #####################
 #   ############################################################################
 
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "user level commands complete" && sleep 4; fi
+say -v Victoria "user level commands complete" && sleep 4
 
 #   ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -404,7 +401,7 @@ if [ $ANNOUNCE = "y" ]; then say -v Victoria "user level commands complete" && s
 
 if [ $INITIALSETUPDISABLED = "n" ]; then
 
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "starting redundancy level commands" && sleep 4; fi
+say -v Victoria "starting redundancy level commands" && sleep 4
 
 #   ############################################################################
 #   ############### INSERT REDUNDANCY LEVEL COMMANDS BELOW HERE ################
@@ -425,7 +422,7 @@ sudo /usr/bin/defaults write /Library/Preferences/com.apple.timezone.auto Active
 #   ################# STOP EDITING REDUNDANCY LEVEL COMMANDS ###################
 #   ############################################################################
 
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "redundancy level commands complete" && sleep 4; fi
+say -v Victoria "redundancy level commands complete" && sleep 4
 
 fi
 
@@ -445,8 +442,6 @@ fi
 
 sleep 4
 
-# Announce [or else play the alert sound four times if announcements are disabled in options]
-
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "computer ready"; else osascript -e "beep 4"; fi
+say -v Victoria "computer ready" && sleep 4
 
 exit
