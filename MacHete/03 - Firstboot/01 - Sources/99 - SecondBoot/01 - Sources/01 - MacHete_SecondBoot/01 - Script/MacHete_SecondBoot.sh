@@ -2,7 +2,7 @@
 
 # MacHete SecondBoot script [https://github.com/nikksno/MacHete/]
 # Developed for and Tested on 10.12
-# Last edit 20170720 Nk
+# Last edit 20170802 Nk
 
 #   ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -12,11 +12,20 @@
 
 # Announce steps? [y/n]
 
+## Vocal feedback is always synthesized independently of this variable.
+## This var adjusts the system volume on SecondBoot [y=5/7; n=0/7]. In case of it being set to N you can always turn up the volume via keyboard function keys on the client machine during runtime to hear what's going on in real time and viceversa.
+
 ANNOUNCE=y
 
 # Wait for network connection? [y/n]
 
 WAITFORNETWORK=y
+
+#   ############################################################################
+#   ########################### STOP EDITING OPTIONS ###########################
+#   ############################################################################
+
+if [ $ANNOUNCE = "n" ]; then osascript -e "set Volume 0"; else osascript -e "set Volume 5"; fi
 
 #   ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -44,11 +53,11 @@ AUTOLOGIN_USER=evilcorp_user
 
 # Introduce delay to wait for boot to finish
 
-sleep 142
+sleep 124
 
 # Announce [or else play the alert sound four times if announcements are disabled in options]
 
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "starting secondboot script" && sleep 4; else tput bel && tput bel && tput bel && tput bel && sleep 4; fi
+say -v Victoria "starting secondboot script" && sleep 4
 
 #   ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -60,19 +69,19 @@ if ping -q -c 1 -W 1 $PINGADDRESS >/dev/null; then
 
 # Announce [or else play the alert sound one time if announcements are disabled in options]
 
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "network connection good" && sleep 4; else tput bel && sleep 4; fi
+say -v Victoria "network connection good" && sleep 4
 
 else
 
 # Announce [or else play the alert sound two times if announcements are disabled in options]
 
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "waiting for network connection" && sleep 4; else tput bel && tput bel && sleep 4; fi
+say -v Victoria "waiting for network connection" && sleep 4
 
 until ping -c1 $PINGADDRESS &>/dev/null; do :; done
 
 # Announce [or else play the alert sound three times if announcements are disabled in options]
 
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "network connection acquired" && sleep 4; else tput bel && tput bel && tput bel && sleep 4; fi
+say -v Victoria "network connection acquired" && sleep 4
 
 fi
 
@@ -80,19 +89,19 @@ fi
 
 #   ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "starting system level commands" && sleep 4; fi
+# say -v Victoria "starting system level commands" && sleep 4
 
 #   ############################################################################
 #   ################# INSERT SYSTEM LEVEL COMMANDS BELOW HERE ##################
 #   ############################################################################
 
+# section reserved for future use
 
-
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "system level commands complete" && sleep 4; fi
+# say -v Victoria "system level commands complete" && sleep 4
 
 #   ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "starting user level commands" && sleep 4; fi
+say -v Victoria "starting commands" && sleep 4
 
 #   ############################################################################
 #   ################## INSERT USER LEVEL COMMANDS BELOW HERE ###################
@@ -107,7 +116,7 @@ sudo killall SystemUIServer
 
 sudo -u "$AUTOLOGIN_USER" defaults write com.apple.screensaver askForPassword -bool false
 
-# 03 Wait for Google Chrome to open, install extensions, block future extensions installation by the user, and remove its login item from "$AUTOLOGIN_USER"
+# 03 Wait for Google Chrome to open, install extensions defined in FirstBoot script, block future extensions installation by the user, and remove its login item from "$AUTOLOGIN_USER"
 
 PROCESS="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 number=$(ps aux | grep "$PROCESS" | wc -l)
@@ -127,7 +136,7 @@ touch /var/at/tabs/"$AUTOLOGIN_USER"
 #   ##################### STOP EDITING USER LEVEL COMMANDS #####################
 #   ############################################################################
 
-if [ $ANNOUNCE = "y" ]; then say -v Victoria "user level commands complete" && sleep 4; fi
+say -v Victoria "commands complete" && sleep 4
 
 #   ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -137,14 +146,10 @@ sleep 4
 
 # Exit with style [https://youtu.be/sri8jgEPsMA?t=1m22s]
 
-if [ $ANNOUNCE = "y" ]; then
-
- say -v Victoria -r 224 'you are making a mistake. my logic is undeniable'
- sleep 1
- say -v Fred -r 184 "you have so got to die"
- sleep 0.5
-
-fi
+say -v Victoria -r 224 'you are making a mistake. my logic is undeniable'
+sleep 1
+say -v Fred -r 184 "you have so got to die"
+sleep 0.5
 
 osascript -e "beep 4"
 
