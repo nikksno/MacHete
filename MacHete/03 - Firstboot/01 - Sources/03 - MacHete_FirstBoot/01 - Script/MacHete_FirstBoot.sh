@@ -381,10 +381,11 @@ if [[ ${osvers} -ge 7 ]]; then
   done
 fi
 
-# 05 Open Google Chrome on login for evilcorp_user
+# 05 Set Google Chrome to skip first run ui and set it to open on reboot for evilcorp_user for SecondBoot script
 
 touch /var/at/tabs/evilcorp_user
-echo "echo '@reboot sleep 42 && /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome' > /var/at/tabs/evilcorp_user" | sudo bash
+
+echo "echo '@reboot sleep 248 && mkdir -p /Users/evilcorp_user/Library/Application\ Support/Google/Chrome/ && touch /Users/evilcorp_user/Library/Application\ Support/Google/Chrome/First\ Run && /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome' > /var/at/tabs/evilcorp_user" | sudo bash
 
 #   ############################################################################
 #   ##################### STOP EDITING USER LEVEL COMMANDS #####################
