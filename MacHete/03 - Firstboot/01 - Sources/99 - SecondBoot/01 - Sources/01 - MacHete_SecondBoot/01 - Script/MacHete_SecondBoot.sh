@@ -108,7 +108,11 @@ sudo killall SystemUIServer
 
 sudo -u "$AUTOLOGIN_USER" defaults write com.apple.screensaver askForPassword -bool false
 
-# 03 Wait for Google Chrome to open, install extensions defined in FirstBoot script, block future extensions installation by the user, and remove its login item from "$AUTOLOGIN_USER"
+# 03 Remove Dock Master from User Template to prevent its dock from installing on accounts created in the future
+
+sudo rm /System/Library/User\ Template/English.lproj/Library/Preferences/com.apple.dock.plist
+
+# 04 Wait for Google Chrome to open, install extensions defined in FirstBoot script, block future extensions installation by the user, and remove its login item from "$AUTOLOGIN_USER"
 
 PROCESS="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 number=$(ps aux | grep "$PROCESS" | wc -l)
