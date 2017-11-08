@@ -2,7 +2,7 @@
 
 # MacHete SecondBoot script [https://github.com/nikksno/MacHete/]
 # Developed for and Tested on 10.12
-# Last edit 20170802 Nk
+# Last edit 20171108 Nk
 
 #   ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 

@@ -2,7 +2,7 @@
 
 # MacHete FirstBoot script [https://github.com/nikksno/MacHete/]
 # Developed for and Tested on 10.12
-# Last edit 20170802 Nk
+# Last edit 20171108 Nk
 
 #   ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -224,12 +224,24 @@ sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate.plist Critical
 sudo defaults write /Library/Preferences/com.apple.commerce.plist AutoUpdateRestartRequired -bool YES
 sudo defaults write /Library/Preferences/com.apple.commerce.plist AutoUpdate -bool YES
 
-# 05 Enable NoSleep at 15:42 every day [if the mac is awake at that time to actually execute this cronjob - this is intentional] and keep awake for scheduled updates from the ARD server until 20:32 [scheduled shutdown time] + 10 minutes [scheduled shutdown pre-alert time], after which disable NoSleep at 20:56 in case of missed scheduled shutdown. Also disable NoSleep after reboot.
+## This is here for 10.13. Don't use yet!
 
-sudo touch /var/at/tabs/root
-echo "echo '42 15 * * * /usr/local/bin/NoSleepCtrl -abs 1,1 && sleep 4 && /usr/local/bin/NoSleepCtrl -abs 1,1 && sleep 4 && /usr/local/bin/NoSleepCtrl -abs 1,1 && caffeinate -t 18840 && /usr/local/bin/NoSleepCtrl -abs 0,0' > /var/at/tabs/root" | sudo bash
-echo "echo '@reboot sleep 108 && /usr/local/bin/NoSleepCtrl -abs 0,0' >> /var/at/tabs/root" | sudo bash
-sudo crontab /var/at/tabs/root
+# 05 Create non-admin user [create-user-pkg doesn't work in 10.13]
+
+#usertocreate="evilcorp_user"
+#usertocreatepw="password"
+
+#. /etc/rc.common
+#dscl . create /Users/$usertocreate
+#dscl . create /Users/$usertocreate RealName "EvilCorp User"
+##dscl . create /Users/$usertocreate picture "/Path/To/Picture.png"
+#dscl . passwd /Users/$usertocreate $usertocreatepw
+#dscl . create /Users/$usertocreate UniqueID 542
+#dscl . create /Users/$usertocreate PrimaryGroupID 20
+#dscl . create /Users/$usertocreate UserShell /bin/bash
+#dscl . create /Users/$usertocreate NFSHomeDirectory /Users/$usertocreate
+#cp -R /System/Library/User\ Template/English.lproj /Users/$usertocreate
+#chown -R $usertocreate:staff /Users/$usertocreate
 
 # 06 Disable Adobe Flash player updater
 
